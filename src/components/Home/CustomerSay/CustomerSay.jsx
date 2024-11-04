@@ -7,16 +7,16 @@ import vegetable from "../../../assets/rightSideCustomer.png";
 
 const CustomerSay = () => {
     return (
-        <div className="w-full h-fit bg-[#FBF7F2] py-24 relative">
-            <div className="flex items-center justify-between px-32">
+        <div className="w-full h-fit bg-[#FBF7F2] md:py-24 py-8 md:relative">
+            <div className="flex items-center justify-between md:px-24 px-8">
                 <div className="flex flex-col items-start justify-center">
                     <div className="flex items-center justify-center gap-2">
                         <div className="w-[10px] h-[10px] bg-red"></div>
-                        <p className="font-roboto text-[20px] font-bold leading-[32px] text-red">Crispy, Every Bite Taste</p>
+                        <p className="font-roboto md:text-xl text-base font-bold leading-[32px] text-red">Crispy, Every Bite Taste</p>
                     </div>
-                    <h5 className="font-bebas text-[62px] font-bold leading-[62px] text-black">What Some of my Customers Say</h5>
+                    <h5 className="font-bebas md:text-[62px] text-[40px] font-bold md:leading-[62px] leading-[48px] text-black">What Some of my Customers Say</h5>
                 </div>
-                <div className="flex items-center justify-center gap-8">
+                <div className="md:flex hidden items-center justify-center gap-8 ">
                     <button className="w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center">
                         <FaChevronLeft className="text-black" />
                     </button>
@@ -25,12 +25,12 @@ const CustomerSay = () => {
                     </button>
                 </div>
             </div>
-            <div className="w-full flex mt-8 px-32">
-                <div className="w-5/12 bg-yellow flex flex-col items-center justify-center gap-[64px] py-8 px-[40px] relative">
+            <div className="w-full flex md:flex-row flex-col-reverse mt-8 md:px-32 px-8">
+                <div className="md:w-5/12 w-full bg-yellow flex flex-col items-center justify-center gap-[64px] py-8 md:px-[40px] px-6 relative">
                     <img src={vector} alt="vector" className="absolute bottom-24 left-0" />
                     <div className="flex items-start justify-center gap-2">
                         <span className="font-bebas text-[59px] font-normal leading-[76.57px] text-black">“</span>
-                        <p className="font-roboto text-xl font-normal leading-[34px] text-black pt-4">You can&apos;t go wrong with Chicken Mandi, I had it twice. The chicken was cooked perfectly, juicy & soft (usually mandi chicken is a bit dry). I would defiantly recommend it.</p>
+                        <p className="font-roboto md:text-xl text-[18px] font-normal leading-[34px] text-black pt-4">You can&apos;t go wrong with Chicken Mandi, I had it twice. The chicken was cooked perfectly, juicy & soft (usually mandi chicken is a bit dry). I would defiantly recommend it.</p>
                     </div>
                     <div className="w-full flex flex-col gap-[18px]">
                         <div className="w-full flex items-center justify-between">
@@ -46,13 +46,13 @@ const CustomerSay = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-7/12 relative">
+                <div className="md:w-7/12 w-full relative">
                     <img src={thumbnail} alt="thumbnail" className="w-full h-full object-fit" />
                     <FaCirclePlay className="text-yellow text-[49.53px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer" />
                 </div>
             </div>
-            <img src={tomato} alt="tomato" className="absolute top-24 left-0" />
-            <img src={vegetable} alt="vegetable" className="absolute bottom-0 right-0" />
+            <img src={tomato} alt="tomato" className="absolute top-24 left-0 md:block hidden" />
+            <img src={vegetable} alt="vegetable" className="absolute bottom-0 right-0 md:block hidden" />
         </div>
     );
 };

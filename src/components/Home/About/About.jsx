@@ -14,12 +14,12 @@ const About = () => {
         inactive: 'bg-transparent text-[#333333]'
     }
     return (
-        <div className="w-full h-fit bg-white flex flex-col py-24 relative">
-            <div className="w-full h-full flex items-start justify-between gap-8 px-32">
-                <div className="w-5/12 min-h-[460px]">
+        <div className="w-full h-fit bg-white flex flex-col md:py-24 py-8 md:relative">
+            <div className="w-full h-full flex md:flex-row flex-col items-start justify-between gap-8 md:px-32 px-8">
+                <div className="w-full md:w-5/12 md:min-h-[460px] h-full">
                     <img src={aboutImage} alt="about" className="w-full h-full object-fit" />
                 </div>
-                <div className="w-7/12 h-full flex flex-col justify-center items-start gap-[18px]">
+                <div className="w-full md:w-7/12 h-full flex flex-col justify-center items-start gap-[18px]">
                     <div className="w-full flex gap-4 border-b-[1px] border-b-[#B52B1D]">
                         {buttonNames.map((button) => (
                             <button
@@ -31,9 +31,9 @@ const About = () => {
                             </button>
                         ))}
                     </div>
-                    <h5 className="text-[62px] font-bebas font-bold leading-[62px] text-[#181818]">Exceptional culinary experience and delicious food</h5>
+                    <h5 className="md:text-[62px] text-[40px] font-bebas font-bold md:leading-[62px] leading-[48px] text-[#181818]">Exceptional culinary experience and delicious food</h5>
                     <p className="font-roboto text-base font-normal text-justify text-[#333333]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.</p>
-                    <div className="flex gap-8">
+                    <div className="flex md:flex-row flex-col gap-8">
                         <button className="common-btn uppercase">About More</button>
                         <button className="flex items-center justify-start gap-2 font-roboto text-[18px] font-bold text-black">
                             <MdOutlineWifiCalling3 className="text-red text-[20px]" />
@@ -42,7 +42,7 @@ const About = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center gap-24 mt-[72px]">
+            <div className="flex md:flex-row flex-col items-start md:items-center md:justify-center md:gap-24 gap-8 mt-[72px] md:px-0 px-8">
                 {aboutItems.map((item) => (
                     <div key={item.id} className="flex items-center justify-center gap-4">
                         <div className="w-[90px] h-[90px] bg-white rounded-full shadow-lg flex items-center justify-center">
@@ -55,7 +55,7 @@ const About = () => {
                     </div>
                 ))}
             </div>
-            <img src={sideImage} alt="side" className="absolute top-[300px] right-0" />
+            <img src={sideImage} alt="side" className="absolute top-[340px] right-0 md:block hidden" />
         </div>
     );
 };
