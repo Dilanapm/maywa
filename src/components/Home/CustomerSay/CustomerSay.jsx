@@ -26,8 +26,8 @@ const CustomerSay = () => {
                 </div>
             </div>
             <div className="w-full flex mt-8 px-32">
-                <div className="w-5/12 bg-yellow flex flex-col items-center justify-center gap-[164px] py-16 px-24 relative">
-                    <img src={vector} alt="vector" className="absolute bottom-8 left-0" />
+                <div className="w-5/12 bg-yellow flex flex-col items-center justify-center gap-[64px] py-8 px-[40px] relative">
+                    <img src={vector} alt="vector" className="absolute bottom-24 left-0" />
                     <div className="flex items-start justify-center gap-2">
                         <span className="font-bebas text-[59px] font-normal leading-[76.57px] text-black">“</span>
                         <p className="font-roboto text-xl font-normal leading-[34px] text-black pt-4">You can&apos;t go wrong with Chicken Mandi, I had it twice. The chicken was cooked perfectly, juicy & soft (usually mandi chicken is a bit dry). I would defiantly recommend it.</p>
@@ -52,7 +52,7 @@ const CustomerSay = () => {
                 </div>
             </div>
             <img src={tomato} alt="tomato" className="absolute top-24 left-0" />
-            <img src={vegetable} alt="vegetable" className="absolute bottom-16 right-0" />
+            <img src={vegetable} alt="vegetable" className="absolute bottom-0 right-0" />
         </div>
     );
 };

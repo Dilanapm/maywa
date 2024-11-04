@@ -7,7 +7,7 @@ const PopularItemCard = ({ item }) => {
             <div className="w-[57px] h-[4px] bg-red"></div>
             <div className="flex flex-col items-center justify-center">
                 <h5 className="text-[24px] font-bebas font-bold leading-[24px] text-black">{item.title}</h5>
-                <p className="text-[14px] font-roboto font-normal leading-[32px] text-black">{item.description}</p>
+                <p className="text-[12px] font-roboto font-normal leading-[32px] text-black">{item.description}</p>
             </div>
         </div>
     );
