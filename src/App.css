@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.bg-background-primary {
+  background: linear-gradient(123.4deg, #BD1F17 40.8%, #A61D13 76.4%, #8E1B0F 120.69%);
+}
+
+.bgSVG {
+  background-image: url('./assets/bgSvg.png');
+  background-repeat: repeat;
+}
+
+.heroTransparent {
+  background: linear-gradient(90deg, rgba(189, 31, 23, 0) 32.88%, rgba(189, 31, 23, 0.7) 100%);
+}
+
+.bgBookTable {
+  background-image: url('./assets/book-table.jpeg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
