@@ -1,10 +1,8 @@
 import { useState } from "react";
 import aboutImage from "../../../assets/about.png";
 import sideImage from "../../../assets/about-side.png";
-import { FiShoppingBag } from "react-icons/fi";
-import { SlBadge } from "react-icons/sl";
-import { LuBox } from "react-icons/lu";
 import { MdOutlineWifiCalling3 } from "react-icons/md";
+import { aboutItems, buttonNames } from "../../../utils/dummyData";
 
 const About = () => {
     const [activeButton, setActiveButton] = useState(buttonNames[0].id);
@@ -69,51 +67,3 @@ const About = () => {
 };
 
 export default About;
-
-const buttonNames = [
-    {
-        id: 1,
-        name: "About",
-        title: "Exceptional culinary experience and delicious food",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
-        button: "About More",
-        contact: "+88 3426 739 485"
-    },
-    {
-        id: 2,
-        name: "Experience",
-        title: "Unforgettable dining experience with exquisite flavors",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
-        button: "Experience More",
-        contact: "+88 3426 739 485"
-    },
-    {
-        id: 3,
-        name: "Contact",
-        title: "Get in touch with us for more information and booking",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
-        button: "Contact Us",
-        contact: "+88 3426 739 485"
-    },
-]
-
-const aboutItems = [
-    {
-        id: 1,
-        image: <LuBox className="text-red text-[35px]" />,
-        title: "Fast Delivery",
-        description: "Within 30 minutes"
-    },
-    {
-        id: 2,
-        image: <SlBadge className="text-red text-[35px]" />,
-        title: "Absolute Dining",
-        description: "Best buffet restaurant"
-    },
-    {
-        id: 3,
-        image: <FiShoppingBag className="text-red text-[35px]" />,
-        title: "Pickup Delivery",
-        description: "Grab your food order"
-    }
-]

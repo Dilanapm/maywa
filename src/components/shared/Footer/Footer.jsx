@@ -1,15 +1,9 @@
-import { IoLogoFacebook } from "react-icons/io5";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaInstagram } from "react-icons/fa6";
-import { FaLinkedin } from "react-icons/fa";
-import { FaRegClock } from "react-icons/fa";
-import { MdOutlineWifiCalling3 } from "react-icons/md";
-import { IoMailOutline } from "react-icons/io5";
-import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { footerInfo, socialIcons } from "../../../utils/dummyData";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
+
     return (
         <div className="w-full h-fit md:py-24 py-8 bg-[url('./assets/footer.jpeg')] bg-cover bg-center bg-no-repeat relative">
             <div className="absolute inset-0 bg-black/80"></div>
@@ -49,45 +43,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-const socialIcons = [
-    {
-        icon: IoLogoFacebook,
-    },
-    {
-        icon: FaXTwitter,
-    },
-    {
-        icon: FaInstagram,
-    },
-    {
-        icon: FaLinkedin,
-    }
-];
-
-const footerInfo = [
-    {
-        icon: FaRegClock,
-        title: "Opening Hours",
-        info: "Monday - Sunday",
-        description: "11:00 AM - 10:00 PM"
-    },
-    {
-        icon: MdOutlineWifiCalling3,
-        title: "Let's Talk",
-        info: "Phone: 1-800-222-4545",
-        description: "Fax: 1-800-222-4545"
-    },
-    {
-        icon: IoMailOutline,
-        title: "Book a Table",
-        info: "Email: info@niomax.com",
-        description: "Support: sales@niomax.com"
-    },
-    {
-        icon: IoLocationOutline,
-        title: "Our Address",
-        info: "123 Anywhere, Any City, NY 12345",
-        description: "New York, USA"
-    }
-]

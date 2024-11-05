@@ -1,10 +1,7 @@
 import { FaChevronRight, FaChevronLeft } from "react-icons/fa6";
-import Burger from "../../../assets/burger.png";
-import Pizza from "../../../assets/pizza.png";
-import FrenchFries from "../../../assets/french-fry.png";
-import Chicken from "../../../assets/fried-shrimp.png";
 import PopularItemCard from "./PopularItemCard";
 import sideImg from "../../../assets/popular-item.png";
+import { popularItemData } from "../../../utils/dummyData";
 
 const PopularItem = () => {
     return (
@@ -27,7 +24,7 @@ const PopularItem = () => {
                 </div>
             </div>
             <div className="w-full h-full flex md:flex-row flex-col items-center justify-center gap-8 md:px-32 px-8 mt-10">
-                {PopularItemData.map((item) => (
+                {popularItemData.map((item) => (
                     <PopularItemCard key={item.id} item={item} />
                 ))}
             </div>
@@ -45,30 +42,3 @@ const PopularItem = () => {
 };
 
 export default PopularItem;
-
-const PopularItemData = [
-    {
-        id: 1,
-        title: "Vegetables Burger",
-        description: 'Barbecue Italian cuisine pizza',
-        image: Burger,
-    },
-    {
-        id: 2,
-        title: "Spacial Pizza",
-        description: 'Barbecue Italian cuisine pizza',
-        image: Pizza,
-    },
-    {
-        id: 3,
-        title: "Spacial French fries ",
-        description: 'Barbecue Italian cuisine',
-        image: FrenchFries,
-    },
-    {
-        id: 4,
-        title: "Cuisine Chicken",
-        description: 'Japanese Cuisine Chicken',
-        image: Chicken,
-    },
-];

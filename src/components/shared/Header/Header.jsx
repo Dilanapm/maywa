@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoMenuSharp, IoCloseSharp } from "react-icons/io5";
 import logo from '../../../assets/logo.png';
+import { navItems } from '../../../utils/dummyData';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     return (
         <div className="w-[full] md:h-[108px] h-[77px] flex justify-between items-center md:px-32 px-8">
             <div className="flex items-center gap-[60px]">
@@ -37,29 +39,3 @@ const Header = () => {
 
 export default Header;
 
-const navItems = [
-    {
-        name: 'Home',
-        path: '/'
-    },
-    {
-        name: 'About',
-        path: '/'
-    },
-    {
-        name: 'Portfolio',
-        path: '/'
-    },
-    {
-        name: 'Clients',
-        path: '/'
-    },
-    {
-        name: 'Blog',
-        path: '/'
-    },
-    {
-        name: 'Contact',
-        path: '/'
-    }
-]
