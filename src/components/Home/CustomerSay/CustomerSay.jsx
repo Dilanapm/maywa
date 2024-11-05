@@ -13,7 +13,7 @@ const CustomerSay = () => {
 
     return (
         <div className="w-full h-fit bg-[#FBF7F2] md:py-24 py-8 md:relative">
-            <div className="flex items-center justify-between md:px-24 px-8">
+            <div className="flex items-center justify-between md:px-32 px-8">
                 <div className="flex flex-col items-start justify-center">
                     <div className="flex items-center justify-center gap-2">
                         <div className="w-[10px] h-[10px] bg-red"></div>
