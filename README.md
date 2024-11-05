@@ -27,5 +27,5 @@ To set up and run this project locally, follow these steps:
 
 ### Cloning the Repository
    ```bash
-   git clone https://github.com/ruhulaminparvez/Restro.git
+   git clone https://github.com/ruhulaminparvez/restro.git
    ```
