@@ -2,7 +2,7 @@ import { PropTypes } from "prop-types";
 
 const PopularItemCard = ({ item }) => {
     return (
-        <div className="w-[306px] min-h-[300px] bg-white p-8 flex flex-col items-center justify-center gap-6 hover:shadow-lg transition-all duration-300">
+        <div className="md:max-w-[306px] w-full min-h-[300px] bg-white p-8 flex flex-col items-center justify-center gap-6 hover:shadow-lg transition-all duration-300">
             <img src={item.image} alt={item.title} />
             <div className="w-[57px] h-[4px] bg-red"></div>
             <div className="flex flex-col items-center justify-center">

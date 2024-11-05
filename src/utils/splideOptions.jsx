@@ -20,8 +20,12 @@ const optionsPopular = {
         next: 'splide__arrow--next',
     },
     breakpoints: {
-        1280: {
+        1450: {
             perPage: 4,
+            gap: 20,
+        },
+        1280: {
+            perPage: 3,
             gap: 20,
         },
         1024: {
