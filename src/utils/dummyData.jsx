@@ -115,6 +115,24 @@ const popularItemData = [
         description: 'Japanese Cuisine Chicken',
         image: Chicken,
     },
+    {
+        id: 5,
+        title: "Spacial Pizza",
+        description: 'Barbecue Italian cuisine pizza',
+        image: Pizza,
+    },
+    {
+        id: 6,
+        title: "Spacial French fries ",
+        description: 'Barbecue Italian cuisine',
+        image: FrenchFries,
+    },
+    {
+        id: 7,
+        title: "Cuisine Chicken",
+        description: 'Japanese Cuisine Chicken',
+        image: Chicken,
+    },
 ];
 
 const socialIcons = [
