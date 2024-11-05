@@ -43,5 +43,27 @@ const optionsPopular = {
     },
 };
 
+const optionsCustomerSay = {
+    perPage: 1,
+    perMove: 1,
+    autoplay: true,
+    interval: 3000,
+    pauseOnHover: true,
+    pagination: false,
+    arrows: false,
+    type: 'loop',
+    focus: 'center',
+    trimSpace: false,
+    autoScroll: true,
+    align: 'center',
+    justify: 'center',
+    classes: {
+        arrows: 'splide__arrows',
+        arrow: 'splide__arrow',
+        prev: 'splide__arrow--prev',
+        next: 'splide__arrow--next',
+    },
+}
 
-export { optionsPopular };
+
+export { optionsPopular, optionsCustomerSay };

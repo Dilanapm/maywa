@@ -14,6 +14,12 @@ import Burger from "../assets/burger.png";
 import Pizza from "../assets/pizza.png";
 import FrenchFries from "../assets/french-fry.png";
 import Chicken from "../assets/fried-shrimp.png";
+import thumbnail from "../assets/thumbnailCustomer.png";
+import thumbnailTwo from "../assets/thumbnail-two.webp";
+import thumbnailThree from "../assets/thumbnail-three.jpg";
+import profile from "../assets/customter.png";
+import profileTwo from "../assets/profile-two.jpg";
+import profileThree from "../assets/profile-three.jpg";
 
 const navItems = [
     {
@@ -177,4 +183,31 @@ const footerInfo = [
     }
 ]
 
-export { navItems, buttonNames, aboutItems, popularItemData, socialIcons, footerInfo };
+const customerSayData = [
+    {
+        id: 1,
+        profile: profile,
+        name: "Khalid Al Dawsry",
+        location: "Jeddah, Saudi",
+        quote: "You can't go wrong with Chicken Mandi, I had it twice. The chicken was cooked perfectly, juicy & soft (usually mandi chicken is a bit dry). I would defiantly recommend it.",
+        thumbnail: thumbnail,
+    },
+    {
+        id: 2,
+        profile: profileTwo,
+        name: "Aisha Al Harbi",
+        location: "Riyadh, Saudi",
+        quote: "The Lamb Mandi was absolutely delicious. The meat was tender and flavorful. Highly recommended!",
+        thumbnail: thumbnailTwo,
+    },
+    {
+        id: 3,
+        profile: profileThree,
+        name: "Omar Al Zahrani",
+        location: "Dammam, Saudi",
+        quote: "I tried the Beef Mandi and it was amazing. The spices were perfect and the beef was cooked to perfection.",
+        thumbnail: thumbnailThree,
+    },
+];
+
+export { navItems, buttonNames, aboutItems, popularItemData, socialIcons, footerInfo, customerSayData };

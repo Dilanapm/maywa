@@ -9,6 +9,7 @@ import { optionsPopular } from "../../../utils/splideOptions";
 
 const PopularItem = () => {
     const splideRef = useRef(null);
+
     return (
         <div className="w-full h-fit bg-[#FBF7F2] md:py-24 py-8 md:relative">
             <div className="flex items-center justify-between md:px-32 px-8">
@@ -21,10 +22,10 @@ const PopularItem = () => {
                 </div>
                 <div className="md:flex items-center justify-center gap-8 hidden">
                     <button className="w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center" onClick={() => splideRef.current.splide.go('<')}>
-                        <FaChevronLeft className={`${splideRef.current.splide.index === 0 ? 'text-gray-400' : 'text-red'}`} />
+                        <FaChevronLeft className='text-red' />
                     </button>
                     <button className="w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center" onClick={() => splideRef.current.splide.go('>')}>
-                        <FaChevronRight className={`${splideRef.current.splide.index === popularItemData.length - 1 ? 'text-gray-400' : 'text-red'}`} />
+                        <FaChevronRight className='text-red' />
                     </button>
                 </div>
             </div>
@@ -39,10 +40,10 @@ const PopularItem = () => {
             </div>
             <div className="flex items-center justify-center gap-4 mt-4 md:hidden">
                 <button className="w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center" onClick={() => splideRef.current.splide.go('<')}>
-                    <FaChevronLeft className={`${splideRef.current.splide.index === 0 ? 'text-gray-400' : 'text-red'}`} />
+                    <FaChevronLeft className='text-red' />
                 </button>
                 <button className="w-[60px] h-[60px] bg-white rounded-full shadow-lg flex items-center justify-center" onClick={() => splideRef.current.splide.go('>')}>
-                    <FaChevronRight className={`${splideRef.current.splide.index === popularItemData.length - 1 ? 'text-gray-400' : 'text-red'}`} />
+                    <FaChevronRight className='text-red' />
                 </button>
             </div>
             <img src={sideImg} alt="sideImg" className="absolute top-52 left-0 md:block hidden" />
