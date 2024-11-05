@@ -41,7 +41,7 @@ const About = () => {
                     <p key={`description-${animationKey}`} className={`font-roboto text-base font-normal text-justify text-[#333333] ${clickedButton[activeButton - 1] ? 'animate-fadeSlide' : ''}`}>{buttonNames[activeButton - 1].description}</p>
                     <div key={`buttons-${animationKey}`} className={`flex gap-8 ${clickedButton[activeButton - 1] ? 'animate-fadeSlide' : ''}`}>
                         <button className="common-btn uppercase">{buttonNames[activeButton - 1].button}</button>
-                        <button className="flex items-center justify-start gap-2 font-roboto text-[18px] font-bold text-black">
+                        <button className="md:flex hidden items-center justify-start gap-2 font-roboto text-[18px] font-bold text-black">
                             <MdOutlineWifiCalling3 className="text-red text-[20px]" />
                             {buttonNames[activeButton - 1].contact}
                         </button>
