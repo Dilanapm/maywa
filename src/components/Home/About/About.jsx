@@ -7,7 +7,15 @@ import { LuBox } from "react-icons/lu";
 import { MdOutlineWifiCalling3 } from "react-icons/md";
 
 const About = () => {
-    const [activeButton, setActiveButton] = useState(1);
+    const [activeButton, setActiveButton] = useState(buttonNames[0].id);
+    const [clickedButton, setClickedButton] = useState({});
+    const [animationKey, setAnimationKey] = useState(0);
+
+    const handleButtonClick = (button) => {
+        setActiveButton(button.id);
+        setClickedButton((prev) => ({ ...prev, [button.id - 1]: true }));
+        setAnimationKey((prevKey) => prevKey + 1);
+    };
 
     const activeButtonStyle = {
         active: 'bg-[#B52B1D] text-[#fff]',
@@ -25,19 +33,19 @@ const About = () => {
                             <button
                                 key={button.id}
                                 className={`font-roboto text-[14px] font-normal leading-[14px] text-[#181818] px-4 py-2 transition-all duration-300 ease-in-out scale-100 hover:scale-110 active:scale-90 ${activeButton === button.id ? activeButtonStyle.active : activeButtonStyle.inactive}`}
-                                onClick={() => setActiveButton(button.id)}
+                                onClick={() => handleButtonClick(button)}
                             >
                                 {button.name}
                             </button>
                         ))}
                     </div>
-                    <h5 className="md:text-[62px] text-[40px] font-bebas font-bold md:leading-[62px] leading-[48px] text-[#181818]">Exceptional culinary experience and delicious food</h5>
-                    <p className="font-roboto text-base font-normal text-justify text-[#333333]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.</p>
-                    <div className="flex md:flex-row flex-col gap-8">
-                        <button className="common-btn uppercase">About More</button>
+                    <h5 key={`title-${animationKey}`} className={`md:text-[62px] text-[40px] font-bebas font-bold md:leading-[62px] leading-[48px] text-[#181818] ${clickedButton[activeButton - 1] ? 'animate-fadeSlide' : ''}`}>{buttonNames[activeButton - 1].title}</h5>
+                    <p key={`description-${animationKey}`} className={`font-roboto text-base font-normal text-justify text-[#333333] ${clickedButton[activeButton - 1] ? 'animate-fadeSlide' : ''}`}>{buttonNames[activeButton - 1].description}</p>
+                    <div key={`buttons-${animationKey}`} className={`flex gap-8 ${clickedButton[activeButton - 1] ? 'animate-fadeSlide' : ''}`}>
+                        <button className="common-btn uppercase">{buttonNames[activeButton - 1].button}</button>
                         <button className="flex items-center justify-start gap-2 font-roboto text-[18px] font-bold text-black">
                             <MdOutlineWifiCalling3 className="text-red text-[20px]" />
-                             +88 3426 739 485
+                            {buttonNames[activeButton - 1].contact}
                         </button>
                     </div>
                 </div>
@@ -66,14 +74,26 @@ const buttonNames = [
     {
         id: 1,
         name: "About",
+        title: "Exceptional culinary experience and delicious food",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
+        button: "About More",
+        contact: "+88 3426 739 485"
     },
     {
         id: 2,
         name: "Experience",
+        title: "Unforgettable dining experience with exquisite flavors",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
+        button: "Experience More",
+        contact: "+88 3426 739 485"
     },
     {
         id: 3,
         name: "Contact",
+        title: "Get in touch with us for more information and booking",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ornare non sed est cursus. Vel hac convallis ipsum, facilisi odio pellentesque bibendum viverra tempus. Lorem ipsum dolor sit amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore magna minim veniam nostrud exercitation.",
+        button: "Contact Us",
+        contact: "+88 3426 739 485"
     },
 ]
 
