@@ -1,4 +1,4 @@
-import Header from "../shared/Header/header";
+import Header from "../shared/Header/Header";
 import heroImage from "../../assets/maywa_presentacion.jpg"; // Tu imagen con las botellas
 import maywaLogo from "../../assets/maywa-logo.png"; // Tu logo redondo
 

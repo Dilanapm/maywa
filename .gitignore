@@ -12,3 +12,6 @@ bower_components
 psd
 thumb
 sketch
+
+# 👉 Evita subir la carpeta de build
+dist/
