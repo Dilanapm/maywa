@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { footerInfo, socialIcons } from "../../../utils/dummyData";
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const Footer = () => {
     const currentYear = new Date().getFullYear();
@@ -9,20 +10,29 @@ const Footer = () => {
             <div className="absolute inset-0 bg-black/80"></div>
             <div className="flex flex-col items-center justify-center md:gap-[120px] gap-[64px] md:px-32 px-8">
                 <div className="flex flex-col items-center justify-center gap-[48px]">
-                    <h4 className="font-bebas md:text-[62px] text-[40px] font-bold md:leading-[64px] leading-[48px] text-center text-white z-10">We ready to have you the best dining experiences</h4>
+                    <h4 className="text-4xl md:text-[62px] font-bold leading-tight text-center text-white z-10">Estamos listos para brindarte la mejor experiencia con Maywa</h4>
                     <div className="flex md:flex-row flex-col items-center justify-between gap-6">
-                        {footerInfo.map((info, index) => (
-                            <div key={index} className="flex flex-col items-center justify-center gap-6">
-                                <info.icon className="text-yellow text-[22.5px] z-10" />
-                                <div className="flex flex-col items-center justify-center gap-3">
-                                    <h5 className="font-bebas text-2xl font-bold leading-[28px] text-white z-10">{info.title}</h5>
-                                    <div className="flex flex-col items-center justify-center">
-                                        <p className="font-roboto text-base font-normal leading-[25px] text-white z-10">{info.info}</p>
-                                        <p className="font-roboto text-base font-normal leading-[25px] text-white z-10">{info.description}</p>
-                                    </div>
-                                </div>
+                        <div className="flex flex-col items-center justify-center gap-6">
+                            <FaPhoneAlt className="text-yellow-400 text-[22.5px] z-10" />
+                            <div className="flex flex-col items-center justify-center gap-3">
+                                <h5 className="text-xl font-semibold text-white z-10">Teléfono</h5>
+                                <p className="text-base text-white z-10">+591 712 576 16</p>
                             </div>
-                        ))}
+                        </div>
+                        <div className="flex flex-col items-center justify-center gap-6">
+                            <FaEnvelope className="text-yellow-400 text-[22.5px] z-10" />
+                            <div className="flex flex-col items-center justify-center gap-3">
+                                <h5 className="text-xl font-semibold text-white z-10">Email</h5>
+                                <p className="text-base text-white z-10">maywa@gmail.com</p>
+                            </div>
+                        </div>
+                        <div className="flex flex-col items-center justify-center gap-6">
+                            <FaMapMarkerAlt className="text-yellow-400 text-[22.5px] z-10" />
+                            <div className="flex flex-col items-center justify-center gap-3">
+                                <h5 className="text-xl font-semibold text-white z-10">Dirección</h5>
+                                <p className="text-base text-white text-center z-10">Av. Landaeta, Zona Irpavi, La Paz - Escuela Militar de Ingeniería EMI</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-center justify-center gap-[25px]">
@@ -33,8 +43,8 @@ const Footer = () => {
                             </Link>
                         ))}
                     </div>
-                    <p className="font-roboto md:text-[21px] text-[16px] font-normal md:leading-[25.6px] leading-[20px] text-center text-white z-10">
-                        © {currentYear} <span className="text-yellow">Niomax</span> All Rights Reserved
+                    <p className="text-lg md:text-xl text-white text-center z-10">
+                        © {currentYear} <span className="text-yellow-400">Maywa</span> Todos los derechos reservados
                     </p>
                 </div>
             </div>
