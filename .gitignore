@@ -15,3 +15,10 @@ sketch
 
 # 👉 Evita subir la carpeta de build
 dist/
+
+# 🔒 Variables de entorno - NO SUBIR CREDENCIALES
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local

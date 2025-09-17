@@ -10,21 +10,23 @@ import { FaRegClock } from "react-icons/fa";
 import { MdOutlineWifiCalling3 } from "react-icons/md";
 import { IoMailOutline } from "react-icons/io5";
 import { IoLocationOutline } from "react-icons/io5";
-import Burger from "../assets/burger.png";
-import Pizza from "../assets/pizza.png";
-import FrenchFries from "../assets/french-fry.png";
-import Chicken from "../assets/fried-shrimp.png";
-import thumbnail from "../assets/majoyaba2.jpg";
-import thumbnailTwo from "../assets/picantay2.jpg";
-import thumbnailThree from "../assets/jino2.jpg";
-import profile from "../assets/customter.png";
-import profileTwo from "../assets/profile-two.jpg";
-import profileThree from "../assets/profile-three.jpg";
-import Majoyaba from '../assets/majoyaba2.jpg';
-import Picantay from '../assets/picantay2.jpg';
-import Maywasach from '../assets/sachets.jpg'
-import Maywacombo from '../assets/maywacombo.png';
-import QuinuaMiel from '../assets/jino2.jpg';
+
+// 🌶️ IMÁGENES DE SALSAS MAYWA
+import MajoyabaImg from '../assets/majoyaba2.jpg';
+import PicantayImg from '../assets/picantay2.jpg';
+import JinoAndinoImg from '../assets/jino2.jpg';
+import MaywaComboImg from '../assets/maywacombo.png';
+import SalsasIndividualesImg from '../assets/sachets.jpg';
+
+// 🖼️ IMÁGENES DE CLIENTES Y TESTIMONIOS
+import CustomerProfile from "../assets/customter.png";
+import ProfileTwo from "../assets/profile-two.jpg";
+import ProfileThree from "../assets/profile-three.jpg";
+
+// 📸 THUMBNAILS PARA TESTIMONIOS
+import ThumbnailMajoyaba from "../assets/majoyaba2.jpg";
+import ThumbnailPicantay from "../assets/picantay2.jpg";
+import ThumbnailJino from "../assets/jino2.jpg";
 const navItems = [
   { name: "Inicio", path: "/" },
   { name: "Productos", path: "#productos" },
@@ -94,37 +96,51 @@ const popularItemData = [
     title: "Majoyaba",
     description: "Salsa crocante de haba con ají suave",
     price: "Bs. 16.77",
-    image: Majoyaba,
+    image: MajoyabaImg,
+    category: "individual",
+    size: "100g",
+    ingredients: ["Haba crocante", "Ají suave", "Especias andinas"]
   },
   {
     id: 2,
     title: "Picantay",
     description: "Salsa picante de locoto con haba molida",
     price: "Bs. 16.77",
-    image: Picantay,
+    image: PicantayImg,
+    category: "individual",
+    size: "100g",
+    ingredients: ["Locoto", "Haba molida", "Especias picantes"]
   },
   {
     id: 3,
     title: "Jino Andino",
     description: "Salsa de quinua picante con un toque de miel",
     price: "Bs. 16.77",
-    image: QuinuaMiel,
+    image: JinoAndinoImg,
+    category: "individual", 
+    size: "100g",
+    ingredients: ["Quinua picante", "Miel natural", "Especias andinas"]
   },
   {
     id: 4,
     title: "Combo MAYWA",
     description: "Las 3 salsas en un solo pack promocional",
     price: "Bs. 45",
-    image: Maywacombo,
+    image: MaywaComboImg,
+    category: "combo",
+    size: "3x100g",
+    ingredients: ["Majoyaba", "Picantay", "Jino Andino"]
   },
   {
     id: 5,
     title: "Salsas Individuales",
     description: "Presentación práctica de 50g para acompañar tus snacks o comidas",
     price: "Bs. 3.35",
-    image: Maywasach,
+    image: SalsasIndividualesImg,
+    category: "individual",
+    size: "50g",
+    ingredients: ["Disponible en los 3 sabores"]
   },
-
 ];
 
 const socialIcons = [
@@ -145,54 +161,54 @@ const socialIcons = [
 const footerInfo = [
   {
     icon: FaRegClock,
-    title: "Opening Hours",
-    info: "Monday - Sunday",
-    description: "11:00 AM - 10:00 PM"
+    title: "Horarios de Atención",
+    info: "Lunes - Sábado",
+    description: "8:00 AM - 18:00 PM"
   },
   {
     icon: MdOutlineWifiCalling3,
-    title: "Let's Talk",
-    info: "Phone: 1-800-222-4545",
-    description: "Fax: 1-800-222-4545"
+    title: "Hablemos",
+    info: "WhatsApp: +591 712 576 16",
+    description: "Llamadas: +591 712 576 16"
   },
   {
     icon: IoMailOutline,
-    title: "Book a Table",
-    info: "Email: info@niomax.com",
-    description: "Support: sales@niomax.com"
+    title: "Haz tu Pedido",
+    info: "Email: pedidos@maywa.bo",
+    description: "Ventas: ventas@maywa.bo"
   },
   {
     icon: IoLocationOutline,
-    title: "Our Address",
-    info: "123 Anywhere, Any City, NY 12345",
-    description: "New York, USA"
+    title: "Nuestra Ubicación",
+    info: "La Paz, Bolivia",
+    description: "Entrega en toda la ciudad"
   }
 ]
 
 const customerSayData = [
   {
     id: 1,
-    profile: profile,
+    profile: CustomerProfile,
     name: "María Condori",
     location: "La Paz, Bolivia",
     quote: "La salsa Majoyaba es simplemente deliciosa, tiene el toque exacto de picante y ese sabor andino que me recuerda a mi infancia.",
-    thumbnail: thumbnail,
+    thumbnail: ThumbnailMajoyaba,
   },
   {
     id: 2,
-    profile: profileTwo,
+    profile: ProfileTwo,
     name: "Jorge Mamani",
     location: "El Alto, Bolivia",
     quote: "Probé la Picantay y fue una explosión de sabores. Ideal para acompañar mis empanadas de queso. ¡Totalmente recomendada!",
-    thumbnail: thumbnailTwo,
+    thumbnail: ThumbnailPicantay,
   },
   {
     id: 3,
-    profile: profileThree,
+    profile: ProfileThree,
     name: "Natalia Quispe",
     location: "Cochabamba, Bolivia",
     quote: "La Jino Andino tiene un picante suave y un dulzor especial que combina perfecto con carnes. Una combinación de dioses.",
-    thumbnail: thumbnailThree,
+    thumbnail: ThumbnailJino,
   },
 ];
 
