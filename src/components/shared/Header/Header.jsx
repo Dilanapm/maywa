@@ -60,15 +60,23 @@ const Header = () => {
                         </button>
                     </div>
                 ) : (
-                    <Link
-                        to="/login"
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full text-sm font-semibold transition duration-300 no-underline"
-                    >
-                        Iniciar Sesión
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            to="/login"
+                            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
+                        >
+                            Iniciar Sesión
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
+                        >
+                            Registrarse
+                        </Link>
+                    </div>
                 )}
                 
-                <a
+                {/* <a
                     href="https://wa.me/59171257616"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -76,7 +84,7 @@ const Header = () => {
                 >
                     <FaWhatsapp className="text-xl" />
                     Hacer Pedido
-                </a>
+                </a> */}
             </div>
 
             {/* Menú mobile */}
@@ -103,7 +111,7 @@ const Header = () => {
                                 <>
                                     <li>
                                         <Link
-                                            to={userProfile?.role === 'administrador' ? '/admin' : '/dashboard'}
+                                            to={isAdmin() ? '/admin' : '/dashboard'}
                                             className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-base font-semibold transition duration-300 no-underline"
                                             onClick={() => setIsMenuOpen(false)}
                                         >

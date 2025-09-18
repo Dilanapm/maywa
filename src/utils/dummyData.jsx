@@ -31,7 +31,7 @@ const navItems = [
   { name: "Inicio", path: "/" },
   { name: "Productos", path: "#productos" },
   { name: "Sobre Nosotros", path: "#nosotros" },
-  { name: "Recetas", path: "#recetas" },
+  // { name: "Recetas", path: "#recetas" },
   { name: "Pedidos", path: "#pedido" },
 ];
 

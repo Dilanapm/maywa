@@ -2,6 +2,8 @@
 
 Sitio web del restaurante Maywa - Una experiencia gastronómica moderna con interfaz elegante para explorar nuestro menú y realizar reservas.
 
+*Actualizado: Variables de entorno configuradas para producción*
+
 ## 📋 Tabla de Contenidos
 - [🚀 Inicio Rápido](#-inicio-rápido)
 - [🛠️ Tecnologías](#️-tecnologías)
