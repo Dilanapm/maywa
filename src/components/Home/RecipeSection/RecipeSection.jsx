@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronRight, FaChevronLeft, FaClock, FaUsers, FaUtensils } from "react-icons/fa";
+import majoyaba2 from "../../../assets/majoyaba2.jpg";
+import picantay2 from "../../../assets/picantay2.jpg";
+import jino2 from "../../../assets/jino2.jpg";
 
 const RecipeSection = () => {
   const [activeRecipe, setActiveRecipe] = useState(0);
@@ -11,7 +14,7 @@ const RecipeSection = () => {
       id: 1,
       title: "Empanadas con Majoyaba",
       description: "Empanadas salteñas tradicionales con el toque crocante de Majoyaba",
-      image: "/src/assets/majoyaba2.jpg",
+      image: majoyaba2,
       difficulty: "Fácil",
       time: "30 min",
       servings: "4 personas",
@@ -34,7 +37,7 @@ const RecipeSection = () => {
       id: 2,
       title: "Pollo a la Plancha con Picantay",
       description: "Pollo jugoso con el toque picante perfecto de nuestra salsa Picantay",
-      image: "/src/assets/picantay2.jpg",
+      image: picantay2,
       difficulty: "Intermedio",
       time: "45 min",
       servings: "2 personas",
@@ -58,7 +61,7 @@ const RecipeSection = () => {
       id: 3,
       title: "Quinua Real con Jino Andino",
       description: "Plato nutritivo que combina la quinua boliviana con los sabores únicos de Jino Andino",
-      image: "/src/assets/jino2.jpg",
+      image: jino2,
       difficulty: "Fácil",
       time: "25 min",
       servings: "3 personas",
