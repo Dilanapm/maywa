@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -10,8 +10,21 @@ const LoginForm = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   
-  const { signIn } = useAuth()
+  const { signIn, signOut, isClient, profile } = useAuth()
   const navigate = useNavigate()
+
+  // Effect para validar rol después del login
+  useEffect(() => {
+    if (profile) {
+      if (!isClient()) {
+        setError('Este formulario es solo para clientes. Los administradores deben usar el acceso administrativo.')
+        signOut() // Cerrar sesión automáticamente
+      } else {
+        // Usuario es cliente, redirigir al dashboard
+        navigate('/dashboard')
+      }
+    }
+  }, [profile, isClient, signOut, navigate])
 
   const handleChange = (e) => {
     setFormData({
@@ -44,8 +57,8 @@ const LoginForm = () => {
           setError(error.message)
         }
       } else {
-        // El AuthContext redirigirá automáticamente según el rol del usuario
-        navigate('/')
+        // Login exitoso, el useEffect manejará la redirección
+        console.log('Login exitoso, esperando validación de rol...')
       }
     } catch (err) {
       setError('Error inesperado al iniciar sesión')

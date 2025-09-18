@@ -8,7 +8,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { user, userProfile, signOut } = useAuth();
+    const { user, profile, signOut, isAdmin, isClient } = useAuth();
 
     const handleSignOut = () => {
         signOut();
@@ -40,12 +40,17 @@ const Header = () => {
             <div className="hidden md:flex items-center gap-4">
                 {user ? (
                     <div className="flex items-center gap-4">
+                        <span className="text-green-800 text-sm font-medium">
+                            Hola, {profile?.full_name || user.email}
+                            {isAdmin() && <span className="ml-1 text-red-600 font-bold">(Admin)</span>}
+                            {isClient() && <span className="ml-1 text-blue-600 font-bold">(Cliente)</span>}
+                        </span>
                         <Link
-                            to={userProfile?.business_type === 'administrador' ? '/admin' : '/dashboard'}
+                            to={isAdmin() ? '/admin' : '/dashboard'}
                             className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
                         >
                             <FaUser className="text-sm" />
-                            {userProfile?.business_type === 'administrador' ? 'Admin' : 'Mi Cuenta'}
+                            {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
                         </Link>
                         <button
                             onClick={handleSignOut}
@@ -55,20 +60,12 @@ const Header = () => {
                         </button>
                     </div>
                 ) : (
-                    <div className="flex items-center gap-4">
-                        <Link
-                            to="/login"
-                            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
-                        >
-                            Iniciar Sesión
-                        </Link>
-                        <Link
-                            to="/register"
-                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
-                        >
-                            Registrarse
-                        </Link>
-                    </div>
+                    <Link
+                        to="/login"
+                        className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-full text-sm font-semibold transition duration-300 no-underline"
+                    >
+                        Iniciar Sesión
+                    </Link>
                 )}
                 
                 <a
@@ -111,7 +108,7 @@ const Header = () => {
                                             onClick={() => setIsMenuOpen(false)}
                                         >
                                             <FaUser className="text-sm" />
-                                            {userProfile?.business_type === 'administrador' ? 'Panel Admin' : 'Mi Cuenta'}
+                                            {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
                                         </Link>
                                     </li>
                                     <li>

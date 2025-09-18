@@ -5,6 +5,7 @@ import DashboardLayout from '../layout/DashboardLayout';
 import Home from '../components/Home/Home';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
+import AdminLoginForm from '../components/auth/AdminLoginForm';
 import ClientDashboard from '../components/Dashboard/ClientDashboard';
 import AdminDashboard from '../components/Dashboard/AdminDashboard';
 import { ClientRoute, AdminRoute } from '../components/ProtectedRoutes';
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
             {
                 path: "/register", 
                 element: <RegisterForm />
+            },
+            {
+                path: "/admin-login",
+                element: <AdminLoginForm />
             }
         ]
     },

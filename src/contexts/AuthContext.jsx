@@ -63,6 +63,12 @@ export const AuthProvider = ({ children }) => {
 
   const signIn = async (email, password) => {
     const { data, error } = await auth.signIn(email, password)
+    
+    if (data?.user && !error) {
+      // Cargar perfil del usuario para verificar el rol
+      await loadUserProfile(data.user.id)
+    }
+    
     return { data, error }
   }
 
