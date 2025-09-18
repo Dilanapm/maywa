@@ -3,6 +3,7 @@ import Main from '../layout/Main';
 import AuthLayout from '../layout/AuthLayout';
 import DashboardLayout from '../layout/DashboardLayout';
 import Home from '../components/Home/Home';
+import RecipeDetail from '../components/Recipe/RecipeDetail';
 import LoginForm from '../components/auth/LoginForm';
 import RegisterForm from '../components/auth/RegisterForm';
 import AdminLoginForm from '../components/auth/AdminLoginForm';
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home />
+            },
+            {
+                path: "/receta/:id",
+                element: <RecipeDetail />
             }
         ]
     },

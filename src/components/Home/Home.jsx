@@ -1,5 +1,6 @@
 import About from "./About/About";
 import PopularItem from "./PopularItem/PopularItem";
+import RecipeSection from "./RecipeSection/RecipeSection";
 import BookTable from "./BookTable/BookTable";
 import CustomerSay from "./CustomerSay/CustomerSay";
 
@@ -8,6 +9,7 @@ const Home = () => {
         <>
             <About />
             <PopularItem />
+            <RecipeSection />
             <BookTable />
             <CustomerSay />
         </>
