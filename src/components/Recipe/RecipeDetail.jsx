@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { FaChevronLeft, FaClock, FaUsers, FaUtensils, FaCheckCircle } from "react-icons/fa";
 import majoyaba2 from "../../assets/majoyaba2.jpg";
 import picantay2 from "../../assets/picantay2.jpg";
@@ -7,6 +8,11 @@ import jino2 from "../../assets/jino2.jpg";
 const RecipeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  // Hacer scroll hacia arriba cuando se carga el componente
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]); // Se ejecuta cada vez que cambia el ID de la receta
 
   const recipes = [
     {
@@ -147,7 +153,10 @@ const RecipeDetail = () => {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Receta no encontrada</h2>
           <button 
-            onClick={() => navigate('/')}
+            onClick={() => {
+              navigate('/');
+              window.scrollTo(0, 0);
+            }}
             className="bg-red-600 text-white px-6 py-2 rounded-lg"
           >
             Volver al inicio
@@ -174,7 +183,16 @@ const RecipeDetail = () => {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-8 w-full">
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => {
+                navigate('/', { replace: true });
+                // Hacer scroll a la sección de recetas después de una pequeña pausa
+                setTimeout(() => {
+                  const recetasSection = document.getElementById('recetas');
+                  if (recetasSection) {
+                    recetasSection.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }, 100);
+              }}
               className="flex items-center gap-2 text-white mb-6 hover:text-orange-300 transition-colors"
             >
               <FaChevronLeft />
@@ -350,8 +368,14 @@ const RecipeDetail = () => {
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             {recipes.filter(r => r.id !== recipe.id).slice(0, 2).map((relatedRecipe) => (
-              <div key={relatedRecipe.id} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
-                   onClick={() => navigate(`/receta/${relatedRecipe.id}`)}>
+              <div 
+                key={relatedRecipe.id} 
+                className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                onClick={() => {
+                  navigate(`/receta/${relatedRecipe.id}`);
+                  window.scrollTo(0, 0);
+                }}
+              >
                 <img src={relatedRecipe.image} alt={relatedRecipe.title} className="w-full h-48 object-cover" />
                 <div className="p-6">
                   <h4 className="font-bebas text-xl text-gray-900 mb-2">{relatedRecipe.title}</h4>

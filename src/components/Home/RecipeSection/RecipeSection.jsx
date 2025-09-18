@@ -235,7 +235,10 @@ const RecipeSection = () => {
               {/* Action Button */}
               <div className="mt-8">
                 <button 
-                  onClick={() => navigate(`/receta/${currentRecipe.id}`)}
+                  onClick={() => {
+                    navigate(`/receta/${currentRecipe.id}`);
+                    window.scrollTo(0, 0);
+                  }}
                   className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-bold uppercase transition-colors"
                 >
                   Ver Receta Completa
