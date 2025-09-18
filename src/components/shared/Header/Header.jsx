@@ -103,7 +103,7 @@ const Header = () => {
                                 <>
                                     <li>
                                         <Link
-                                            to={userProfile?.business_type === 'administrador' ? '/admin' : '/dashboard'}
+                                            to={userProfile?.role === 'administrador' ? '/admin' : '/dashboard'}
                                             className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-base font-semibold transition duration-300 no-underline"
                                             onClick={() => setIsMenuOpen(false)}
                                         >

@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const signUp = async (email, password, fullName, phone, businessType = 'particular', role = 'cliente') => {
+  const signUp = async (email, password, fullName, phone, address, businessType = 'particular', role = 'cliente') => {
     const { data, error } = role === 'administrador' 
       ? await auth.signUpAdmin(email, password, fullName)
-      : await auth.signUpClient(email, password, fullName, phone, businessType)
+      : await auth.signUpClient(email, password, fullName, phone, address, businessType)
     
     return { data, error }
   }
@@ -92,6 +92,7 @@ export const AuthProvider = ({ children }) => {
   const value = {
     user,
     profile,
+    userProfile: profile, // Alias para compatibilidad
     loading,
     signUp,
     signIn,

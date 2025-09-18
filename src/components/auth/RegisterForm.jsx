@@ -9,7 +9,8 @@ const RegisterForm = () => {
     confirmPassword: '',
     fullName: '',
     phone: '',
-    businessType: 'particular'
+    address: '',
+    businessType: ''
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -52,6 +53,7 @@ const RegisterForm = () => {
         formData.password,
         formData.fullName,
         formData.phone,
+        formData.address,
         formData.businessType
       )
       
@@ -144,6 +146,22 @@ const RegisterForm = () => {
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
                 placeholder="+591 xxx xxx xxx"
                 value={formData.phone}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+                Dirección
+              </label>
+              <input
+                id="address"
+                name="address"
+                type="text"
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                placeholder="Tu dirección completa"
+                value={formData.address}
                 onChange={handleChange}
                 disabled={loading}
               />

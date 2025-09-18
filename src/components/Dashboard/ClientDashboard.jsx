@@ -167,8 +167,10 @@ const ClientDashboard = () => {
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Mi Perfil</h3>
               <div className="space-y-2">
+                <p><span className="font-medium">Nombre:</span> {userProfile?.full_name || 'No especificado'}</p>
                 <p><span className="font-medium">Email:</span> {user?.email}</p>
                 <p><span className="font-medium">Teléfono:</span> {userProfile?.phone || 'No especificado'}</p>
+                <p><span className="font-medium">Dirección:</span> {userProfile?.address || 'No especificada'}</p>
                 <p><span className="font-medium">Tipo:</span> {userProfile?.business_type}</p>
               </div>
             </div>
