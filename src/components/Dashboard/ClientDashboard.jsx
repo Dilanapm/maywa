@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
 import { getProducts, getUserOrders, createOrder } from '../../config/supabase'
+import Cart from '../Cart/Cart'
+import Checkout from '../Cart/Checkout'
+import OrderHistory from '../Orders/OrderHistory'
+import MaywaButton from '../MaywaButton/MaywaButton'
+import { FiShoppingCart, FiPackage, FiUser, FiClock } from 'react-icons/fi'
 
 const ClientDashboard = () => {
   const { user, userProfile, signOut } = useAuth()
@@ -9,10 +14,18 @@ const ClientDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [cart, setCart] = useState([])
   const [showCart, setShowCart] = useState(false)
+  const [showCheckout, setShowCheckout] = useState(false)
+  const [showOrderHistory, setShowOrderHistory] = useState(false)
+  const [activeView, setActiveView] = useState('products') // products, orders, profile
 
   useEffect(() => {
     loadDashboardData()
+    loadCartFromStorage()
   }, [])
+
+  useEffect(() => {
+    saveCartToStorage()
+  }, [cart])
 
   const loadDashboardData = async () => {
     try {
@@ -30,6 +43,17 @@ const ClientDashboard = () => {
     }
   }
 
+  const loadCartFromStorage = () => {
+    const savedCart = localStorage.getItem('maywa_cart')
+    if (savedCart) {
+      setCart(JSON.parse(savedCart))
+    }
+  }
+
+  const saveCartToStorage = () => {
+    localStorage.setItem('maywa_cart', JSON.stringify(cart))
+  }
+
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.id === product.id)
     if (existingItem) {
@@ -40,6 +64,18 @@ const ClientDashboard = () => {
       ))
     } else {
       setCart([...cart, { ...product, quantity: 1 }])
+    }
+    
+    // Show success feedback
+    const button = document.querySelector(`[data-product-id="${product.id}"]`)
+    if (button) {
+      const originalText = button.textContent
+      button.textContent = '¡Agregado!'
+      button.style.backgroundColor = '#22c55e'
+      setTimeout(() => {
+        button.textContent = originalText
+        button.style.backgroundColor = ''
+      }, 1000)
     }
   }
 
@@ -59,62 +95,53 @@ const ClientDashboard = () => {
     }
   }
 
-  const calculateTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0)
+  const clearCart = () => {
+    setCart([])
   }
 
-  const handleCheckout = async () => {
-    if (cart.length === 0) return
+  const handleCheckout = (cartItems) => {
+    setShowCart(false)
+    setShowCheckout(true)
+  }
 
-    try {
-      const orderData = {
-        user_id: user.id,
-        total_amount: calculateTotal(),
-        status: 'pendiente',
-        items: cart.map(item => ({
-          product_id: item.id,
-          quantity: item.quantity,
-          price: item.price
-        }))
-      }
+  const handleOrderSuccess = async (newOrder) => {
+    clearCart()
+    setShowCheckout(false)
+    await loadDashboardData() // Reload to show new order
+    alert('¡Pedido realizado exitosamente! 🎉')
+  }
 
-      await createOrder(orderData)
-      setCart([])
-      setShowCart(false)
-      loadDashboardData() // Reload to show new order
-      alert('¡Pedido realizado exitosamente!')
-    } catch (error) {
-      console.error('Error creating order:', error)
-      alert('Error al procesar el pedido')
-    }
+  const getTotalCartItems = () => {
+    return cart.reduce((total, item) => total + item.quantity, 0)
+  }
+
+  const getRecentOrders = () => {
+    return orders.slice(0, 3) // Show only 3 most recent
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando tu dashboard...</p>
+        </div>
       </div>
     )
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                ¡Hola, {userProfile?.full_name}! 🌶️
-              </h1>
-              <p className="text-gray-600">Bienvenido a tu dashboard de MAYWA</p>
-            </div>
-            <div className="flex items-center space-x-4">
+  // Show Order History view
+  if (showOrderHistory) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-6">
               <button
-                onClick={() => setShowCart(!showCart)}
-                className="relative bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
+                onClick={() => setShowOrderHistory(false)}
+                className="text-orange-600 hover:text-orange-800 font-medium"
               >
-                🛒 Carrito ({cart.length})
+                ← Volver al Dashboard
               </button>
               <button
                 onClick={signOut}
@@ -125,148 +152,477 @@ const ClientDashboard = () => {
             </div>
           </div>
         </div>
+        <OrderHistory />
+      </div>
+    )
+  }
+
+  // Show Checkout view
+  if (showCheckout) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Checkout
+          cartItems={cart}
+          onBack={() => {
+            setShowCheckout(false)
+            setShowCart(true)
+          }}
+          onOrderSuccess={handleOrderSuccess}
+        />
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                ¡Hola, {userProfile?.full_name || 'Cliente'}! 🌶️
+              </h1>
+              <p className="text-gray-600">Bienvenido a tu dashboard de MAYWA</p>
+            </div>
+            <div className="flex items-center space-x-4">
+              {/* Cart Button */}
+              <button
+                onClick={() => setShowCart(true)}
+                className="relative bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 transition-colors flex items-center space-x-2"
+              >
+                <FiShoppingCart />
+                <span>Carrito</span>
+                {getTotalCartItems() > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-6 w-6 flex items-center justify-center">
+                    {getTotalCartItems()}
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={signOut}
+                className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b sticky top-[88px] z-30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'products', name: 'Productos', icon: FiShoppingCart },
+              { id: 'orders', name: 'Mis Pedidos', icon: FiPackage },
+              { id: 'profile', name: 'Mi Perfil', icon: FiUser }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveView(tab.id)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 transition-colors ${
+                  activeView === tab.id
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <tab.icon className="text-lg" />
+                <span>{tab.name}</span>
+                {tab.id === 'orders' && orders.length > 0 && (
+                  <span className="bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-full">
+                    {orders.length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </nav>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Products Section */}
-          <div className="lg:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Productos Disponibles</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {products.map((product) => (
-                <div key={product.id} className="bg-white rounded-lg shadow p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-                    <span className="text-lg font-bold text-orange-600">
-                      Bs. {product.price}
-                    </span>
-                  </div>
-                  <p className="text-gray-600 mb-4">{product.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500">
-                      Stock: {product.stock_quantity}
-                    </span>
-                    <button
-                      onClick={() => addToCart(product)}
-                      disabled={product.stock_quantity === 0}
-                      className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700 disabled:opacity-50"
-                    >
-                      Agregar al Carrito
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
+        
+        {/* Products View */}
+        {activeView === 'products' && (
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             
-            {/* Profile Info */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Mi Perfil</h3>
-              <div className="space-y-2">
-                <p><span className="font-medium">Nombre:</span> {userProfile?.full_name || 'No especificado'}</p>
-                <p><span className="font-medium">Email:</span> {user?.email}</p>
-                <p><span className="font-medium">Teléfono:</span> {userProfile?.phone || 'No especificado'}</p>
-                <p><span className="font-medium">Dirección:</span> {userProfile?.address || 'No especificada'}</p>
-                <p><span className="font-medium">Tipo:</span> {userProfile?.business_type}</p>
+            {/* Products Grid */}
+            <div className="lg:col-span-3">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Productos Disponibles ({products.length})
+                </h2>
+                <div className="text-sm text-gray-500">
+                  {getTotalCartItems() > 0 && (
+                    <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full">
+                      {getTotalCartItems()} en carrito
+                    </span>
+                  )}
+                </div>
               </div>
-            </div>
-
-            {/* Recent Orders */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Mis Pedidos Recientes</h3>
-              {orders.length === 0 ? (
-                <p className="text-gray-500">No tienes pedidos aún</p>
-              ) : (
-                <div className="space-y-3">
-                  {orders.slice(0, 5).map((order) => (
-                    <div key={order.id} className="border-l-4 border-orange-600 pl-4">
-                      <div className="flex justify-between">
-                        <span className="text-sm font-medium">Pedido #{order.id.slice(0, 8)}</span>
-                        <span className="text-sm text-gray-500">{order.status}</span>
-                      </div>
-                      <p className="text-sm text-gray-600">
-                        Bs. {order.total_amount} - {new Date(order.created_at).toLocaleDateString()}
-                      </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {products.map((product) => (
+                  <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
+                    {/* Product Image */}
+                    <div className="h-48 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
+                      <span className="text-6xl">🌶️</span>
                     </div>
-                  ))}
+                    
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
+                          {product.name}
+                        </h3>
+                        <span className="text-xl font-bold text-orange-600 ml-2">
+                          Bs. {product.price}
+                        </span>
+                      </div>
+                      
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {product.description}
+                      </p>
+                      
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                          <span className={`text-sm px-2 py-1 rounded-full ${
+                            product.stock_quantity > 10 
+                              ? 'bg-green-100 text-green-800' 
+                              : product.stock_quantity > 0
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}>
+                            Stock: {product.stock_quantity}
+                          </span>
+                          {product.category && (
+                            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              {product.category}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      
+                      <MaywaButton
+                        onClick={() => addToCart(product)}
+                        disabled={product.stock_quantity === 0}
+                        className="w-full"
+                        data-product-id={product.id}
+                      >
+                        {product.stock_quantity === 0 ? 'Sin Stock' : 'Agregar al Carrito'}
+                      </MaywaButton>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {products.length === 0 && (
+                <div className="text-center py-12">
+                  <div className="text-6xl mb-4">🌶️</div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No hay productos disponibles
+                  </h3>
+                  <p className="text-gray-500">
+                    Pronto tendremos deliciosas salsas MAYWA para ti
+                  </p>
                 </div>
               )}
             </div>
 
-          </div>
-        </div>
-      </div>
+            {/* Sidebar */}
+            <div className="space-y-6">
+              
+              {/* Cart Summary */}
+              {cart.length > 0 && (
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                    <FiShoppingCart className="mr-2" />
+                    Carrito ({getTotalCartItems()})
+                  </h3>
+                  <div className="space-y-3 mb-4">
+                    {cart.slice(0, 3).map((item) => (
+                      <div key={item.id} className="flex justify-between items-center text-sm">
+                        <span className="truncate">{item.name}</span>
+                        <span className="text-orange-600 font-medium">
+                          {item.quantity}x Bs.{item.price}
+                        </span>
+                      </div>
+                    ))}
+                    {cart.length > 3 && (
+                      <p className="text-sm text-gray-500">+{cart.length - 3} más...</p>
+                    )}
+                  </div>
+                  <div className="border-t pt-3 mb-4">
+                    <div className="flex justify-between items-center font-bold">
+                      <span>Total:</span>
+                      <span className="text-orange-600">
+                        Bs. {cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                  <MaywaButton onClick={() => setShowCart(true)} className="w-full">
+                    Ver Carrito
+                  </MaywaButton>
+                </div>
+              )}
 
-      {/* Cart Modal */}
-      {showCart && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full max-h-96 overflow-y-auto">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">Mi Carrito</h3>
+              {/* Recent Orders */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-900 flex items-center">
+                    <FiClock className="mr-2" />
+                    Pedidos Recientes
+                  </h3>
+                  {orders.length > 0 && (
+                    <button
+                      onClick={() => setShowOrderHistory(true)}
+                      className="text-orange-600 hover:text-orange-800 text-sm font-medium"
+                    >
+                      Ver todos
+                    </button>
+                  )}
+                </div>
+                
+                {getRecentOrders().length === 0 ? (
+                  <p className="text-gray-500 text-sm">No tienes pedidos aún</p>
+                ) : (
+                  <div className="space-y-3">
+                    {getRecentOrders().map((order) => (
+                      <div key={order.id} className="border-l-4 border-orange-600 pl-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <span className="text-sm font-medium">
+                              #{order.id.slice(0, 8)}
+                            </span>
+                            <p className="text-xs text-gray-500">
+                              {new Date(order.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-medium">Bs. {order.total_amount}</p>
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              order.status === 'entregado' ? 'bg-green-100 text-green-800' :
+                              order.status === 'enviado' ? 'bg-blue-100 text-blue-800' :
+                              order.status === 'procesando' ? 'bg-yellow-100 text-yellow-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {order.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Profile Summary */}
+              <div className="bg-white rounded-lg shadow p-6">
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <FiUser className="mr-2" />
+                  Mi Perfil
+                </h3>
+                <div className="space-y-2 text-sm">
+                  <p><span className="font-medium">Nombre:</span> {userProfile?.full_name || 'No especificado'}</p>
+                  <p><span className="font-medium">Email:</span> {user?.email}</p>
+                  <p><span className="font-medium">Teléfono:</span> {userProfile?.phone || 'No especificado'}</p>
+                  <p><span className="font-medium">Tipo:</span> {userProfile?.business_type}</p>
+                </div>
+                <button
+                  onClick={() => setActiveView('profile')}
+                  className="mt-4 text-orange-600 hover:text-orange-800 text-sm font-medium"
+                >
+                  Editar perfil →
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Orders View */}
+        {activeView === 'orders' && (
+          <div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-semibold text-gray-900">Mis Pedidos</h2>
               <button
-                onClick={() => setShowCart(false)}
-                className="text-gray-500 hover:text-gray-700"
+                onClick={() => setShowOrderHistory(true)}
+                className="bg-orange-600 text-white px-4 py-2 rounded-md hover:bg-orange-700"
               >
-                ✕
+                Ver historial completo
               </button>
             </div>
             
-            {cart.length === 0 ? (
-              <p className="text-gray-500">Tu carrito está vacío</p>
+            {orders.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">📦</div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No tienes pedidos aún
+                </h3>
+                <p className="text-gray-500 mb-6">
+                  ¡Explora nuestros productos y haz tu primer pedido!
+                </p>
+                <MaywaButton onClick={() => setActiveView('products')}>
+                  Ver Productos
+                </MaywaButton>
+              </div>
             ) : (
-              <>
-                <div className="space-y-3 mb-4">
-                  {cart.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <h4 className="font-medium">{item.name}</h4>
-                        <p className="text-sm text-gray-600">Bs. {item.price}</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {orders.slice(0, 6).map((order) => (
+                  <div key={order.id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="font-semibold text-gray-900">
+                          Pedido #{order.id.slice(0, 8)}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {new Date(order.created_at).toLocaleDateString()}
+                        </p>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="bg-gray-200 px-2 py-1 rounded"
-                        >
-                          -
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="bg-gray-200 px-2 py-1 rounded"
-                        >
-                          +
-                        </button>
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          className="text-red-500 ml-2"
-                        >
-                          🗑️
-                        </button>
-                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        order.status === 'entregado' ? 'bg-green-100 text-green-800' :
+                        order.status === 'enviado' ? 'bg-blue-100 text-blue-800' :
+                        order.status === 'procesando' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {order.status}
+                      </span>
                     </div>
-                  ))}
-                </div>
-                
-                <div className="border-t pt-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="font-medium">Total: Bs. {calculateTotal()}</span>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="flex justify-between">
+                        <span className="text-sm text-gray-500">Total:</span>
+                        <span className="font-medium">Bs. {order.total_amount}</span>
+                      </div>
+                      {order.delivery_address && (
+                        <div className="text-sm text-gray-500 truncate">
+                          📍 {order.delivery_address}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <button
+                      onClick={() => setShowOrderHistory(true)}
+                      className="w-full text-orange-600 hover:text-orange-800 text-sm font-medium"
+                    >
+                      Ver detalles →
+                    </button>
                   </div>
-                  <button
-                    onClick={handleCheckout}
-                    className="w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700"
-                  >
-                    Realizar Pedido
-                  </button>
-                </div>
-              </>
+                ))}
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Profile View */}
+        {activeView === 'profile' && (
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-xl font-semibold text-gray-900 mb-6">Mi Perfil</h2>
+            
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Nombre completo
+                    </label>
+                    <input
+                      type="text"
+                      value={userProfile?.full_name || ''}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={user?.email || ''}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      disabled
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Teléfono
+                    </label>
+                    <input
+                      type="tel"
+                      value={userProfile?.phone || ''}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      disabled
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tipo de cuenta
+                    </label>
+                    <input
+                      type="text"
+                      value={userProfile?.business_type || ''}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                      disabled
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Dirección
+                  </label>
+                  <textarea
+                    value={userProfile?.address || ''}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
+                    rows="3"
+                    disabled
+                  />
+                </div>
+                
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h3 className="font-medium text-blue-900 mb-2">📝 Edición de Perfil</h3>
+                  <p className="text-sm text-blue-800">
+                    Para actualizar tu información de perfil, contáctanos por WhatsApp o durante tu próximo pedido.
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-6 border-t">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">{orders.length}</div>
+                    <div className="text-sm text-gray-500">Total Pedidos</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">
+                      {orders.filter(o => o.status === 'entregado').length}
+                    </div>
+                    <div className="text-sm text-gray-500">Entregados</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">
+                      Bs. {orders.reduce((total, order) => total + order.total_amount, 0).toFixed(2)}
+                    </div>
+                    <div className="text-sm text-gray-500">Total Gastado</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Cart Modal */}
+      <Cart
+        isOpen={showCart}
+        onClose={() => setShowCart(false)}
+        cartItems={cart}
+        onUpdateQuantity={updateQuantity}
+        onRemoveItem={removeFromCart}
+        onClearCart={clearCart}
+        onCheckout={handleCheckout}
+      />
     </div>
   )
 }
