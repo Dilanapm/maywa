@@ -1,0 +1,24 @@
+{
+  "flags": {
+    "show-new-recipe-section": {
+      "description": "Muestra contenido premium en la sección de recetas",
+      "defaultValue": false
+    },
+    "enable-advanced-analytics": {
+      "description": "Habilita métricas avanzadas y tracking detallado",
+      "defaultValue": false
+    },
+    "show-premium-features": {
+      "description": "Muestra características premium como videos exclusivos",
+      "defaultValue": false
+    },
+    "enable-newsletter-popup": {
+      "description": "Muestra popup de suscripción al newsletter",
+      "defaultValue": false
+    },
+    "show-beta-dashboard": {
+      "description": "Muestra el nuevo dashboard en versión beta",
+      "defaultValue": false
+    }
+  }
+}

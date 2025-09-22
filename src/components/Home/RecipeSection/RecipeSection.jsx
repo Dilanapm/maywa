@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaChevronRight, FaChevronLeft, FaClock, FaUsers, FaUtensils } from "react-icons/fa";
+import { FaChevronRight, FaChevronLeft, FaClock, FaUsers, FaUtensils, FaStar } from "react-icons/fa";
 import majoyaba2 from "../../../assets/majoyaba2.jpg";
 import picantay2 from "../../../assets/picantay2.jpg";
 import jino2 from "../../../assets/jino2.jpg";
+import useFeatureFlags from "../../../hooks/useFeatureFlags";
 
 const RecipeSection = () => {
   const [activeRecipe, setActiveRecipe] = useState(0);
   const navigate = useNavigate();
+  const { showNewRecipeSection, enableAdvancedAnalytics } = useFeatureFlags();
 
   const recipes = [
     {
@@ -276,6 +278,33 @@ const RecipeSection = () => {
               <p className="text-gray-600 text-sm">Cada salsa resalta diferentes sabores, experimenta y encuentra tu favorita</p>
             </div>
           </div>
+          
+          {/* Premium Features - Solo se muestra si el feature flag está habilitado */}
+          {showNewRecipeSection && (
+            <div className="mt-8 p-6 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl border-2 border-purple-200">
+              <div className="flex items-center gap-2 mb-4">
+                <FaStar className="text-purple-600" />
+                <h4 className="font-bold text-purple-900">Contenido Premium</h4>
+                <span className="bg-purple-600 text-white px-2 py-1 rounded-full text-xs">NUEVO</span>
+              </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-xl">👨‍🍳</span>
+                  </div>
+                  <h5 className="font-semibold text-gray-900 mb-2">Videos Exclusivos</h5>
+                  <p className="text-gray-600 text-sm">Aprende técnicas secretas de nuestros chefs</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <span className="text-xl">📱</span>
+                  </div>
+                  <h5 className="font-semibold text-gray-900 mb-2">App Móvil</h5>
+                  <p className="text-gray-600 text-sm">Recetas offline y temporizadores inteligentes</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
