@@ -11,6 +11,14 @@ const RecipeSection = () => {
   const navigate = useNavigate();
   const { showNewRecipeSection, enableAdvancedAnalytics } = useFeatureFlags();
 
+  // 🐛 Debug: Mostrar estado de flags solo en desarrollo
+  if (import.meta.env.DEV) {
+    console.log('🧪 RecipeSection - Flags:', { 
+      showNewRecipeSection, 
+      enableAdvancedAnalytics 
+    });
+  }
+
   const recipes = [
     {
       id: 1,
@@ -122,6 +130,27 @@ const RecipeSection = () => {
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Descubre cómo nuestras salsas artesanales transforman platos tradicionales en experiencias gastronómicas únicas
           </p>
+          
+          {/* 🐛 Debug: Indicador visual de Feature Flags (solo en desarrollo) */}
+          {import.meta.env.DEV && (
+            <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 rounded-lg max-w-md mx-auto">
+              <p className="text-sm font-bold text-yellow-800 mb-1">🚩 Feature Flags Debug:</p>
+              <div className="text-xs text-yellow-700 space-y-1">
+                <div className="flex justify-between">
+                  <span>showNewRecipeSection:</span>
+                  <span className={showNewRecipeSection ? 'text-green-600 font-bold' : 'text-red-600'}>
+                    {showNewRecipeSection ? '✅ ON' : '❌ OFF'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>enableAdvancedAnalytics:</span>
+                  <span className={enableAdvancedAnalytics ? 'text-green-600 font-bold' : 'text-red-600'}>
+                    {enableAdvancedAnalytics ? '✅ ON' : '❌ OFF'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Recipe Navigation */}
