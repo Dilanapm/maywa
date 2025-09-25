@@ -4,6 +4,7 @@ import { FaChevronLeft, FaClock, FaUsers, FaUtensils, FaCheckCircle } from "reac
 import majoyaba2 from "../../assets/majoyaba2.jpg";
 import picantay2 from "../../assets/picantay2.jpg";
 import jino2 from "../../assets/jino2.jpg";
+import { RecipeReviewSection } from "../RecipeReview";
 
 const RecipeDetail = () => {
   const { id } = useParams();
@@ -357,6 +358,16 @@ const RecipeDetail = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Recipe Reviews Section */}
+      <div className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-8">
+          <RecipeReviewSection 
+            recipeId={recipe.id} 
+            recipeName={recipe.title}
+          />
         </div>
       </div>
 

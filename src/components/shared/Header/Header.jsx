@@ -8,7 +8,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const { user, profile, signOut, isAdmin, isClient } = useAuth();
+    const { user, profile, loading, signOut, isAdmin, isClient } = useAuth();
 
     const handleSignOut = () => {
         signOut();
@@ -42,21 +42,30 @@ const Header = () => {
                     <div className="flex items-center gap-4">
                         <span className="text-green-800 text-sm font-medium">
                             Hola, {profile?.full_name || user.email}
-                            {isAdmin() && <span className="ml-1 text-red-600 font-bold">(Admin)</span>}
-                            {isClient() && <span className="ml-1 text-blue-600 font-bold">(Cliente)</span>}
+                            {loading ? (
+                                <span className="ml-1 text-gray-500 text-xs">(Cargando...)</span>
+                            ) : (
+                                <>
+                                    {isAdmin() && <span className="ml-1 text-red-600 font-bold">(Admin)</span>}
+                                    {isClient() && <span className="ml-1 text-blue-600 font-bold">(Cliente)</span>}
+                                </>
+                            )}
                         </span>
-                        <Link
-                            to={isAdmin() ? '/admin' : '/dashboard'}
-                            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
-                        >
-                            <FaUser className="text-sm" />
-                            {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
-                        </Link>
+                        {!loading && profile && (
+                            <Link
+                                to={isAdmin() ? '/admin' : '/dashboard'}
+                                className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300 no-underline"
+                            >
+                                <FaUser className="text-sm" />
+                                {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
+                            </Link>
+                        )}
                         <button
                             onClick={handleSignOut}
                             className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition duration-300"
+                            disabled={loading}
                         >
-                            Salir
+                            {loading ? 'Cargando...' : 'Salir'}
                         </button>
                     </div>
                 ) : (
@@ -109,22 +118,25 @@ const Header = () => {
                             {/* Opciones de usuario mobile */}
                             {user ? (
                                 <>
-                                    <li>
-                                        <Link
-                                            to={isAdmin() ? '/admin' : '/dashboard'}
-                                            className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-base font-semibold transition duration-300 no-underline"
-                                            onClick={() => setIsMenuOpen(false)}
-                                        >
-                                            <FaUser className="text-sm" />
-                                            {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
-                                        </Link>
-                                    </li>
+                                    {!loading && profile && (
+                                        <li>
+                                            <Link
+                                                to={isAdmin() ? '/admin' : '/dashboard'}
+                                                className="flex items-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full text-base font-semibold transition duration-300 no-underline"
+                                                onClick={() => setIsMenuOpen(false)}
+                                            >
+                                                <FaUser className="text-sm" />
+                                                {isAdmin() ? 'Panel Admin' : 'Mi Dashboard'}
+                                            </Link>
+                                        </li>
+                                    )}
                                     <li>
                                         <button
                                             onClick={handleSignOut}
                                             className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-full text-base font-semibold transition duration-300"
+                                            disabled={loading}
                                         >
-                                            Cerrar Sesión
+                                            {loading ? 'Cargando...' : 'Cerrar Sesión'}
                                         </button>
                                     </li>
                                 </>

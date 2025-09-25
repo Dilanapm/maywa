@@ -9,6 +9,7 @@ import {
   updateProduct,
   deleteProduct
 } from '../../config/supabase'
+import ProductManager from '../ProductManager/ProductManager'
 
 const AdminDashboard = () => {
   const { user, userProfile, signOut } = useAuth()
@@ -159,6 +160,7 @@ const AdminDashboard = () => {
             {[
               { id: 'overview', name: 'Resumen' },
               { id: 'products', name: 'Productos' },
+              { id: 'images', name: 'Imágenes' },
               { id: 'orders', name: 'Pedidos' },
               { id: 'users', name: 'Usuarios' }
             ].map((tab) => (
@@ -220,12 +222,38 @@ const AdminDashboard = () => {
                 {products.map((product) => (
                   <li key={product.id} className="px-6 py-4">
                     <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-                        <p className="text-gray-600">{product.description}</p>
-                        <div className="mt-2 flex items-center space-x-4">
-                          <span className="text-sm text-gray-500">Precio: Bs. {product.price}</span>
-                          <span className="text-sm text-gray-500">Stock: {product.stock_quantity}</span>
+                      <div className="flex items-center space-x-4 flex-1">
+                        {/* Product Image */}
+                        <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-red-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                          {product.image_url ? (
+                            <img 
+                              src={product.image_url} 
+                              alt={product.image_alt || product.name}
+                              className="w-full h-full object-cover rounded-lg"
+                              onError={(e) => {
+                                e.target.style.display = 'none'
+                                e.target.nextSibling.style.display = 'flex'
+                              }}
+                            />
+                          ) : null}
+                          <div className={`w-full h-full flex items-center justify-center ${product.image_url ? 'hidden' : 'flex'}`}>
+                            <span className="text-2xl">🌶️</span>
+                          </div>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
+                          <p className="text-gray-600 line-clamp-2">{product.description}</p>
+                          <div className="mt-2 flex items-center space-x-4">
+                            <span className="text-sm text-gray-500">Precio: Bs. {product.price}</span>
+                            <span className="text-sm text-gray-500">Stock: {product.stock_quantity}</span>
+                            <span className="text-sm text-gray-500">Categoría: {product.category}</span>
+                            {product.image_url && (
+                              <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                                Con imagen
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="flex space-x-2">
@@ -247,6 +275,21 @@ const AdminDashboard = () => {
                 ))}
               </ul>
             </div>
+          </div>
+        )}
+
+        {/* Images Tab */}
+        {activeTab === 'images' && (
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                🖼️ Gestión de Imágenes
+              </h2>
+              <p className="text-gray-600">
+                Administra las imágenes de tus productos, sube nuevas fotos y actualiza galerías.
+              </p>
+            </div>
+            <ProductManager />
           </div>
         )}
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 import { getProducts, getUserOrders, createOrder } from '../../config/supabase'
 import Cart from '../Cart/Cart'
 import Checkout from '../Cart/Checkout'
@@ -9,6 +10,7 @@ import { FiShoppingCart, FiPackage, FiUser, FiClock } from 'react-icons/fi'
 
 const ClientDashboard = () => {
   const { user, userProfile, signOut } = useAuth()
+  const navigate = useNavigate()
   const [products, setProducts] = useState([])
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
@@ -137,12 +139,32 @@ const ClientDashboard = () => {
         <div className="bg-white shadow">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-6">
-              <button
-                onClick={() => setShowOrderHistory(false)}
-                className="text-orange-600 hover:text-orange-800 font-medium"
-              >
-                ← Volver al Dashboard
-              </button>
+              <div className="flex items-center space-x-6">
+                {/* Logo MAYWA clickeable */}
+                <button
+                  onClick={() => navigate('/')}
+                  className="flex items-center space-x-3 hover:opacity-80 transition-opacity group"
+                  title="Ir al inicio"
+                >
+                  <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                    <span className="text-white font-bold text-lg">M</span>
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-lg text-gray-900 group-hover:text-orange-600 transition-colors">
+                      MAYWA
+                    </div>
+                  </div>
+                </button>
+                
+                <div className="border-l border-gray-300 pl-6">
+                  <button
+                    onClick={() => setShowOrderHistory(false)}
+                    className="text-orange-600 hover:text-orange-800 font-medium"
+                  >
+                    ← Volver al Dashboard
+                  </button>
+                </div>
+              </div>
               <button
                 onClick={signOut}
                 className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
@@ -179,11 +201,34 @@ const ClientDashboard = () => {
       <div className="bg-white shadow sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                ¡Hola, {userProfile?.full_name || 'Cliente'}! 🌶️
-              </h1>
-              <p className="text-gray-600">Bienvenido a tu dashboard de MAYWA</p>
+            {/* Logo y saludo */}
+            <div className="flex items-center space-x-6">
+              {/* Logo MAYWA clickeable */}
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center space-x-3 hover:opacity-80 transition-opacity group"
+                title="Ir al inicio"
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                  <span className="text-white font-bold text-xl">M</span>
+                </div>
+                <div className="text-left">
+                  <div className="font-bold text-xl text-gray-900 group-hover:text-orange-600 transition-colors">
+                    MAYWA
+                  </div>
+                  <div className="text-xs text-gray-500 -mt-1">
+                    Salsas Artesanales
+                  </div>
+                </div>
+              </button>
+              
+              {/* Saludo del usuario */}
+              <div className="border-l border-gray-300 pl-6">
+                <h1 className="text-2xl font-bold text-gray-900">
+                  ¡Hola, {userProfile?.full_name || 'Cliente'}! 🌶️
+                </h1>
+                <p className="text-gray-600">Bienvenido a tu dashboard</p>
+              </div>
             </div>
             <div className="flex items-center space-x-4">
               {/* Cart Button */}
@@ -266,8 +311,21 @@ const ClientDashboard = () => {
                 {products.map((product) => (
                   <div key={product.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden">
                     {/* Product Image */}
-                    <div className="h-48 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
-                      <span className="text-6xl">🌶️</span>
+                    <div className="h-48 bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center overflow-hidden">
+                      {product.image_url ? (
+                        <img 
+                          src={product.image_url} 
+                          alt={product.image_alt || product.name}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none'
+                            e.target.nextSibling.style.display = 'flex'
+                          }}
+                        />
+                      ) : null}
+                      <div className={`w-full h-full flex items-center justify-center ${product.image_url ? 'hidden' : 'flex'}`}>
+                        <span className="text-6xl">🌶️</span>
+                      </div>
                     </div>
                     
                     <div className="p-6">
@@ -300,8 +358,46 @@ const ClientDashboard = () => {
                               {product.category}
                             </span>
                           )}
+                          {product.size && (
+                            <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                              {product.size}
+                            </span>
+                          )}
                         </div>
                       </div>
+                      
+                      {/* Gallery Images Preview */}
+                      {product.gallery_images && product.gallery_images.length > 0 && (
+                        <div className="flex space-x-2 mb-4 overflow-x-auto">
+                          {product.gallery_images.slice(0, 3).map((imageUrl, index) => (
+                            <div key={index} className="w-12 h-12 bg-gray-100 rounded flex-shrink-0 overflow-hidden">
+                              <img 
+                                src={imageUrl} 
+                                alt={`${product.name} - imagen ${index + 1}`}
+                                className="w-full h-full object-cover hover:scale-110 transition-transform cursor-pointer"
+                                onClick={() => {
+                                  // Crear modal simple para ver imagen grande
+                                  const modal = document.createElement('div')
+                                  modal.className = 'fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50'
+                                  modal.innerHTML = `
+                                    <div class="max-w-3xl max-h-3xl p-4 relative">
+                                      <img src="${imageUrl}" alt="${product.name}" class="max-w-full max-h-full object-contain rounded-lg">
+                                      <button class="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center hover:bg-opacity-75" onclick="this.parentElement.parentElement.remove()">×</button>
+                                    </div>
+                                  `
+                                  document.body.appendChild(modal)
+                                  modal.onclick = (e) => e.target === modal && modal.remove()
+                                }}
+                              />
+                            </div>
+                          ))}
+                          {product.gallery_images.length > 3 && (
+                            <div className="w-12 h-12 bg-gray-200 rounded flex-shrink-0 flex items-center justify-center text-xs text-gray-600">
+                              +{product.gallery_images.length - 3}
+                            </div>
+                          )}
+                        </div>
+                      )}
                       
                       <MaywaButton
                         onClick={() => addToCart(product)}
@@ -341,11 +437,24 @@ const ClientDashboard = () => {
                   </h3>
                   <div className="space-y-3 mb-4">
                     {cart.slice(0, 3).map((item) => (
-                      <div key={item.id} className="flex justify-between items-center text-sm">
-                        <span className="truncate">{item.name}</span>
-                        <span className="text-orange-600 font-medium">
-                          {item.quantity}x Bs.{item.price}
-                        </span>
+                      <div key={item.id} className="flex items-center space-x-3 text-sm">
+                        <div className="w-10 h-10 bg-orange-100 rounded flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {item.image_url ? (
+                            <img 
+                              src={item.image_url} 
+                              alt={item.image_alt || item.name}
+                              className="w-full h-full object-cover rounded"
+                            />
+                          ) : (
+                            <span className="text-lg">🌶️</span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="truncate font-medium">{item.name}</p>
+                          <p className="text-orange-600 font-medium">
+                            {item.quantity}x Bs.{item.price}
+                          </p>
+                        </div>
                       </div>
                     ))}
                     {cart.length > 3 && (

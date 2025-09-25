@@ -14,9 +14,22 @@ const CartItem = ({ item, onUpdateQuantity, onRemove }) => {
 
   return (
     <div className="flex items-center space-x-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
-      {/* Product Image Placeholder */}
-      <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-        <span className="text-2xl">🌶️</span>
+      {/* Product Image */}
+      <div className="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+        {item.image_url ? (
+          <img 
+            src={item.image_url} 
+            alt={item.image_alt || item.name}
+            className="w-full h-full object-cover rounded-lg"
+            onError={(e) => {
+              e.target.style.display = 'none'
+              e.target.nextSibling.style.display = 'flex'
+            }}
+          />
+        ) : null}
+        <div className={`w-full h-full flex items-center justify-center ${item.image_url ? 'hidden' : 'flex'}`}>
+          <span className="text-2xl">🌶️</span>
+        </div>
       </div>
 
       {/* Product Info */}

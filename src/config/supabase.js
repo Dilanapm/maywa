@@ -208,12 +208,64 @@ export const getProfile = async (userId) => {
 // Objeto profiles para compatibilidad
 export const profiles = {
   async getProfile(userId) {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single()
-    return { data, error }
+    try {
+      console.log('🔍 profiles.getProfile called with userId:', userId);
+      
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single()
+      
+      console.log('🔍 profiles.getProfile result:', { 
+        data: data ? { ...data, email: data.email?.substring(0, 10) + '***' } : null, 
+        error: error?.message || error
+      });
+      
+      return { data, error }
+    } catch (err) {
+      console.error('❌ Exception in getProfile:', err);
+      return { data: null, error: err };
+    }
+  },
+
+  async createProfile(userId) {
+    try {
+      console.log('📝 Creating profile for user:', userId);
+      
+      // Obtener datos del usuario de auth
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      
+      if (authError || !user) {
+        console.error('❌ Cannot get user data for profile creation');
+        return { data: null, error: authError };
+      }
+      
+      const profileData = {
+        id: userId,
+        email: user.email,
+        full_name: user.user_metadata?.full_name || '',
+        phone: user.user_metadata?.phone || '',
+        address: user.user_metadata?.address || '',
+        business_type: user.user_metadata?.business_type || 'particular',
+        role: user.user_metadata?.role || 'cliente'
+      };
+      
+      console.log('📝 Creating profile with data:', profileData);
+      
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert(profileData)
+        .select()
+        .single();
+      
+      console.log('📝 Profile creation result:', { data, error });
+      
+      return { data, error };
+    } catch (err) {
+      console.error('❌ Exception creating profile:', err);
+      return { data: null, error: err };
+    }
   },
 
   async updateProfile(userId, updates) {
